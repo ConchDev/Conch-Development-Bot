@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from jishaku import Jishaku as jsk
 from jishaku.codeblocks import codeblock_converter
+import aiosqlite
 
 class Owner(commands.Cog):
     def __init__(self, client):
@@ -25,6 +26,23 @@ class Owner(commands.Cog):
         await ctx.message.add_reaction('\U00002705')
         context = await ctx.bot.get_context(message)
         await context.reinvoke()
+
+    @commands.command()
+    async def commit(self, ctx):
+        db = await aiosqlite.connect(f'db/main.sqlite')
+        cursor = await db.cursor()
+
+        await cursor.execute("INSERT INTO suggesnum (num) VALUES ('1')")
+
+        await db.commit()
+
+        await cursor.execute("DELETE FROM suggesnum WHERE num = '1'")
+
+        await db.commit()
+        await cursor.close()
+        await db.close()
+
+        await ctx.send("Database committed.")
 
 def setup(client):
     client.add_cog(Owner(client))
