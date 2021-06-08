@@ -358,6 +358,7 @@ class Commands(commands.Cog):
         await ctx.send(embed=embed)
 
     @bot.command()
+    @commands.has_role(842233600853278751)
     async def deny(self, ctx, bot_id, reason):
         status = await Funcs.check_bot_status(self, bot_id)
 
@@ -391,6 +392,7 @@ class Commands(commands.Cog):
             await msg.edit(embed=embed)
 
     @bot.command()
+    @commands.has_role(842233600853278751)
     async def approve(self, ctx, bot_id):
         status = await Funcs.check_bot_status(self, bot_id)
 
