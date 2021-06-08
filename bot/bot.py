@@ -10,7 +10,7 @@ load_env = load_dotenv()
 class Client(commands.Bot):
     def __init__(self):
         allowed_mentions = discord.AllowedMentions(roles=False, everyone=False, users=True)
-        super().__init__(command_prefix=['cb??', 'cB?', 'Cb?', 'CB?'], intents=discord.Intents.all(), allowed_mentions=allowed_mentions, case_insensitive=True)
+        super().__init__(command_prefix=['cb?', 'cB?', 'Cb?', 'CB?'], intents=discord.Intents.all(), allowed_mentions=allowed_mentions, case_insensitive=True)
     
 
     def load_cogs(self):
@@ -64,4 +64,4 @@ class Client(commands.Bot):
         self.load_cogs()
         print("Running bot...")
         
-        super().run("ODA3MDk1NzEyMjE0MTU1MjY0.YBzAdA.tUvMr3pd8Fh-tp3cBhelwc5NVd0", reconnect=True)
+        super().run(os.getenv("TOKEN"), reconnect=True)
