@@ -3,6 +3,12 @@ from discord.ext import commands
 from jishaku import Jishaku as jsk
 from jishaku.codeblocks import codeblock_converter
 import aiosqlite
+import asyncio
+import os
+from dotenv import load_dotenv
+import sys
+
+load_env = load_dotenv()
 
 class Owner(commands.Cog):
     def __init__(self, client):
@@ -43,6 +49,30 @@ class Owner(commands.Cog):
         await db.close()
 
         await ctx.send("Database committed.")
+    
+    @commands.command()
+    @commands.is_owner()
+    async def refresh(self, ctx):
+        cog = self.client.get_cog("Jishaku")
+        await cog.jsk_git(ctx, argument=codeblock_converter(f'stash'))
+        await asyncio.sleep(2)
+        await cog.jsk_git(ctx, argument=codeblock_converter(f'pull --ff-only https://github.com/ConchDev/Conch-Development-Bot master'))
+        await asyncio.sleep(2)
+        restart = self.client.get_command('restart')
+        await ctx.invoke(restart)
+
+    @commands.command()
+    @commands.has_role(794015347018956821)
+    async def restart(self, ctx):
+        def restarter():
+            python = sys.executable
+            os.execl(python, python, * sys.argv)
+
+        embed = discord.Embed(title="Bot Restarting...")
+        embed.add_field(name="I'll be back soon...", value="Don't worry", inline=True)
+        await ctx.send(embed=embed)
+        restarter()
+        
 
 def setup(client):
     client.add_cog(Owner(client))
