@@ -1,4 +1,7 @@
 *.env
+
 .vscode/
+
 __pycache__/
-/bot/db/
+
+bot/db/
